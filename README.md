@@ -22,6 +22,10 @@ yarn
 ## App requirements
 We would like you to build a basic chatting/messenger app. You have creative freedom on what it will look like, but you can use the pictures in the [sample implementation](#sample-implementation) section of this document as a guide.
 
+**NOTE: You are required to build the app using JavaScript, CSS, HTML, React and Redux.**
+
+**Tip: to make things easier, we suggest that you use [Create React App](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app) to create your app and, thus, get started faster on building the features below.**
+
 - Required features:
 1. A user should be able to select different friends. You should list at least 5 other friends that the user can select.
 1. After selecting a friend, a user should be able to write messages in the chat window, hit a "Send" button or press Enter to send the message, and see them appear.
