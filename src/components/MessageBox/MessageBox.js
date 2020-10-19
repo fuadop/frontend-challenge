@@ -10,20 +10,22 @@ const MessageBox = (props) => {
     }, [props.contact]);
 
     const sendMessageEventHandler = () => {
-        //JSON Methods not working as expected
         const msgArray = [];
         const newMsg = msgbox.current.value;
         if(!currentChat) {
             msgArray.push(newMsg);
-            const newHistory = msgArray.toString();
+            const newHistory = JSON.stringify({
+                messages: msgArray
+            })
             window.localStorage.setItem(`chat:${props.contact}`, newHistory);
-            return setCurrentChat(window.localStorage.getItem(`chat:${props.contact}`));
+            setCurrentChat(window.localStorage.getItem(`chat:${props.contact}`));
         }else {
-            const prevMessages = currentChat.split(",");
-            prevMessages.push(newMsg);
-            window.localStorage.setItem(`chat:${props.contact}`, prevMessages.toString());
-            return setCurrentChat(window.localStorage.getItem(`chat:${props.contact}`));
+            const prevMessages = JSON.parse(currentChat)
+            prevMessages.messages.push(newMsg)
+            window.localStorage.setItem(`chat:${props.contact}`, JSON.stringify(prevMessages));
+            setCurrentChat(window.localStorage.getItem(`chat:${props.contact}`));
         }
+        msgbox.current.value = null;
         
     }
 
@@ -35,10 +37,9 @@ const MessageBox = (props) => {
                 </p>
             );
         } else {
-            currentChat.split(",").map((message, index) => {
-                console.log(message);
+            return JSON.parse(currentChat).messages.map((message, index) => {
                 return (
-                    <p style={{width: "70%"}} className="text-lead border rounded" key={index}>
+                    <p style={{width: "70%"}} className="text-lead border border-dark rounded p-2" key={index}>
                         {message}
                     </p>
                 );
@@ -51,7 +52,7 @@ const MessageBox = (props) => {
             <div className="" >
                 <div className=" mt-auto p-2 pb-5">
                     <div className="row" >
-                        <div className="col-12 messages" style={{ height: "50vh" }}>
+                        <div className="col-12 d-flex flex-column align-items-end justify-content-end messages" style={{ height: "50vh", zIndex: "-1", overflowY: "scroll" }}>
                             {renderMessages()}
                         </div>
                         <div className="col-12">
@@ -60,7 +61,7 @@ const MessageBox = (props) => {
                         </div>
                         <div className="col-12 text-right pt-3">
                             <button className="btn btn-primary text-capitalize" onClick={sendMessageEventHandler}>
-                                Send
+                                 Send <i className="material-icons">send</i>
                         </button>
                         </div>
                     </div>
